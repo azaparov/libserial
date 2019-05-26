@@ -37,7 +37,9 @@
 #include <cstdlib>
 #include <cstring>
 #include <fcntl.h>
+#ifndef __APPLE_CC__
 #include <linux/serial.h>
+#endif
 #include <sys/ioctl.h>
 #include <type_traits>
 #include <unistd.h>
@@ -1271,7 +1273,11 @@ namespace LibSerial
             baud_rate_as_int = 4000000 ;
             break ;
 #endif // __MAX_BAUD
-#endif // __linux__
+#else // __linux__
+        case BaudRate::BAUD_460800:
+            baud_rate_as_int = 460800 ;
+            break ;
+#endif
         default:
             // If an incorrect baud rate was specified, throw an exception.
             throw std::runtime_error(ERR_MSG_INVALID_BAUD_RATE) ;
@@ -1883,6 +1889,7 @@ namespace LibSerial
 
                 if (file_desc > 0)
                 {
+#ifndef __APPLE_CC__
                     serial_struct serial_port_info {} ;
                     // NOLINTNEXTLINE (hicpp-vararg)
                     if (call_with_retry(ioctl,
@@ -1896,6 +1903,7 @@ namespace LibSerial
                     serial_port_names.push_back(file_name) ;
 
                     close(file_desc) ;
+#endif
                 }
             }
         }
@@ -2081,7 +2089,9 @@ namespace LibSerial
 
         // @NOTE - termios.c_line is not a standard element of the termios
         // structure, (as per the Single Unix Specification 3).
+#ifndef __APPLE_CC__
         port_settings.c_line = '\0' ;
+#endif
 
         // Apply the modified settings.
         if (tcsetattr(this->mFileDescriptor,

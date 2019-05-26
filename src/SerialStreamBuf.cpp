@@ -37,7 +37,9 @@
 #include <cassert>
 #include <cstring>
 #include <fcntl.h>
+#ifndef __APPLE_CC__
 #include <linux/serial.h>
+#endif
 #include <sys/ioctl.h>
 #include <unistd.h>
 

@@ -223,7 +223,9 @@ namespace LibSerial
         BAUD_3500000 = B3500000,
         BAUD_4000000 = B4000000,
 #endif // __MAX_BAUD
-#endif // __linux__
+#else // __linux__
+        BAUD_460800 = 460800,
+#endif
         BAUD_DEFAULT = BAUD_115200,
         BAUD_INVALID = std::numeric_limits<speed_t>::max()
     } ;
