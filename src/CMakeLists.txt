@@ -3,7 +3,10 @@ set(LIBSERIAL_SOURCES
     SerialStream.cpp
     SerialStreamBuf.cpp)
 
+
 add_library(libserial_static STATIC ${LIBSERIAL_SOURCES})
+
+set_property(TARGET libserial_static PROPERTY CXX_STANDARD 14)
 
 #
 # We already have "lib" prefix in the target name. Prevent CMake from adding
@@ -44,6 +47,7 @@ set_target_properties(libserial_static PROPERTIES OUTPUT_NAME libserial)
 #
 if (INSTALL_SHARED)
     add_library(libserial_shared SHARED ${LIBSERIAL_SOURCES})
+    set_property(TARGET libserial_shared PROPERTY CXX_STANDARD 14)
     set_target_properties(libserial_shared PROPERTIES PREFIX "")
     set_target_properties(libserial_shared PROPERTIES OUTPUT_NAME libserial)
     target_include_directories(libserial_shared PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
